@@ -1,9 +1,8 @@
 extends MeshInstance3D
 
 func _ready():
-	print("test target ready")
 	GlobalSignals.new_target_location.connect(_on_new_target_location)
-	
+
 
 func _on_new_target_location(new_loc:Vector3):
 	global_position = new_loc

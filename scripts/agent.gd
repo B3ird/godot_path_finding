@@ -29,9 +29,8 @@ func _physics_process(delta):
 			_on_waiting_to_move(delta)
 		State.MOVE:
 			_on_move()
-	#
+	
 	#print("velocity ", velocity)
-
 	move_and_slide()
 
 
@@ -43,12 +42,13 @@ func _on_idle():
 
 
 func _on_waiting_to_move(delta: float):
+	print("WAITING_TO_MOVE")
 	idle_timer_count -= delta
 	if idle_timer_count <= 0.0:
-		var target_location = target.position
-		
+		#find a "safe" position on the map but can be unreachable if isolated
 		var nav_map = navigation_agent_3d.get_navigation_map()
-		var safe_target = NavigationServer3D.map_get_closest_point(nav_map, target_location)
+		var safe_target = NavigationServer3D.map_get_closest_point(nav_map, target.position)
+		#inform target to change position as safe one
 		GlobalSignals.new_target_location.emit(safe_target)
 		
 		navigation_agent_3d.set_target_position(safe_target)
@@ -57,7 +57,7 @@ func _on_waiting_to_move(delta: float):
 
 
 func _on_move():
-	#print("MOVE")
+	print("MOVE")
 	var current_position = global_position
 	var next_position = navigation_agent_3d.get_next_path_position()
 	var direction = (next_position - current_position)
@@ -66,15 +66,8 @@ func _on_move():
 	navigation_agent_3d.set_velocity(velocity_to_reach)
 
 
-#func get_new_target_location() -> Vector3:	
-	#var offset_x:float = randf_range(2.5, 4.5) * (-1 if randf() < 0.5 else 1)
-	#var offset_z:float = randf_range(2.5, 4.5) * (-1 if randf() < 0.5 else 1)
-	#return global_position + Vector3(offset_x, 0, offset_z)
-
-
 func _on_navigation_agent_3d_target_reached():
 	print("Target reached !")
-	#state = State.IDLE
 
 
 func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3):
