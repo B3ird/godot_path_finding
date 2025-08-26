@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://da2n21ido2oy"]
+
+[ext_resource type="Texture2D" uid="uid://dll6l4sr316k7" path="res://assets/textures/grass.png" id="1_d42nb"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5fe68"]
+albedo_texture = ExtResource("1_d42nb")
+uv1_offset = Vector3(1.5, 1.5, 1.5)
+uv1_triplanar = true
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_wuwwl"]
+material = SubResource("StandardMaterial3D_5fe68")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cfqj5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d42nb"]
+albedo_texture = ExtResource("1_d42nb")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_qyrcq"]
+material = SubResource("StandardMaterial3D_d42nb")
+size = Vector2(1, 1.4)
+orientation = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wuwwl"]
+size = Vector3(1, 0.02, 1.4)
+
+[node name="Meshes" type="Node3D"]
+
+[node name="Bloc" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("BoxMesh_wuwwl")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Bloc"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Bloc/StaticBody3D"]
+shape = SubResource("BoxShape3D_cfqj5")
+
+[node name="Ramp" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0)
+mesh = SubResource("QuadMesh_qyrcq")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ramp"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramp/StaticBody3D"]
+shape = SubResource("BoxShape3D_wuwwl")

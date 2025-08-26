@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://by8yuxndff2ny"]
+
+[ext_resource type="Script" uid="uid://kxm2yuy3hm7h" path="res://scripts/agent.gd" id="1_kuxo3"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dudq3"]
+radius = 0.25
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kuxo3"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ti0t7"]
+radius = 0.25
+height = 0.9
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_kuxo3")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.1
+target_desired_distance = 0.1
+avoidance_enabled = true
+height = 0.9
+radius = 0.25
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(1, 0.691569, 0.382308, 1)
+debug_path_custom_point_size = 8.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_dudq3")
+surface_material_override/0 = SubResource("StandardMaterial3D_kuxo3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ti0t7")
+
+[connection signal="navigation_finished" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_navigation_finished"]
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
+[connection signal="waypoint_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_waypoint_reached"]
